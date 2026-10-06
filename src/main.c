@@ -39,6 +39,9 @@ main(void)
 			case OK:
 				break;
 			case EMPTY_ERROR:
+			case CANARY_ERROR:
+				printf("[ERR] %s\n", sterr_string(err));
+				return 1;
 			default:
 				assert("Unreachable" && 0);
 			}
@@ -56,6 +59,9 @@ main(void)
 			case OK:
 				printf("Popped value = %lg\n", res);
 				break;
+			case CANARY_ERROR:
+				printf("[ERR] %s\n", sterr_string(err));
+				return 1;
 			case ALLOC_ERROR:
 			default:
 				assert("Unreachable" && 0);
@@ -64,7 +70,19 @@ main(void)
 			break;
 		}
 		case 3: // print
-			stack_print(s);
+			sterr_t err = stack_print(s);
+			switch (err) {
+			case OK:
+				break;
+			case CANARY_ERROR:
+				printf("[ERR] %s\n", sterr_string(err));
+				return 1;
+			case ALLOC_ERROR:
+			case EMPTY_ERROR:
+			default:
+				assert("Unreachable" && 0);
+			}
+
 			break;
 		case 4: // exit
 			goto exit;
