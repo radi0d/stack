@@ -9,7 +9,7 @@
 #define CANARY_LEFT 0xdeadbeef
 #define CANARY_RIGHT 0xdefec8ed
 
-#define CANARY_CHECK(s) \
+#define CANARY_CHECK(s)                                                        \
 	do {                                                                   \
 		const uint8_t *t = (const uint8_t *) s->canary_buf;            \
 		if (CANARY_LEFT != *((const uint32_t *) t))                    \
